@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Task } from '../../Task';
-import { TASKS } from '../../mock-tasks';
+import { Task } from 'src/app/Task';
+import { TaskService } from 'src/app/services/task.service';
 
 @Component({
   selector: 'app-tasks',
@@ -9,9 +9,15 @@ import { TASKS } from '../../mock-tasks';
   styleUrls: ['./tasks.component.css'],
 })
 export class TasksComponent implements OnInit {
-  tasks: Task[] = TASKS;
+  tasks: Task[] = [];
 
-  constructor() {}
+  /** Note: To use a service we have to add it as a provider inside the constructor.
+   * private because we will only use from here.
+   * We can use this.taskService.<> any thing we have on TaskService.
+   */
+  constructor(private taskService: TaskService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.taskService.getTasks().subscribe((tasks) => (this.tasks = tasks));
+  }
 }
